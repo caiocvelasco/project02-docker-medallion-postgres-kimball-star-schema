@@ -1,0 +1,8 @@
+# Ignore Python bytecode files
+*.pyc
+
+# Ignore .env files
+.env
+
+# Ignore datasets within the sources folder
+sources/*
