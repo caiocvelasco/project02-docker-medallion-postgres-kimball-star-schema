@@ -3,8 +3,3 @@
 
 # Ignore .env files
 .env
-
-# Ignore datasets within the data folder
-data/bronze/*
-data/silver/*
-data/gold/*
