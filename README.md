@@ -21,8 +21,24 @@
 - **name_of_your_project_repo (project-root)/**
     - **.devcontainer/**
       - devcontainer.json
+    - **data/**
+      - **bronze/**
+        - raw_data.csv
+      - **silver/**
+        - cleaned_data.csv
+      - **gold/**
+        - aggregated_data.csv
     - **your_jup_notebooks/**
       - etl_pipeline.ipynb
+    - **sql/**
+      - **schemas/**
+        - create_schemas.sql
+      - **bronze/**
+        - create_bronze_tables.sql
+      - **silver/**
+        - create_silver_views.sql
+      - **gold/**
+        - create_gold_views.sql
     - **img/**
       - your_README_images.png
     - **sources/**
@@ -47,7 +63,7 @@ Make sure you have the following installed on your local development environment
 Make sure to inclue a .gitignore file with the following information:
 - *.pyc
 - .env
-- sources/*
+- data/*
 
 ### Environment Variables
 
@@ -65,7 +81,7 @@ Create a `.env` file in the project root with the following content:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/caiocvelasco/my-first-docker-project.git
+   git clone https://github.com/caiocvelasco/project02-docker-medallion-postgres-kimball-star-schema.git
    cd my-first-docker-project
 
 2. **Build and start the containers:**
@@ -83,19 +99,10 @@ Create a `.env` file in the project root with the following content:
 ## Project Definition
 
 ### Data Source
-  The data is from an external 3rd party API called [CoinCap API](https://docs.coincap.io/#89deffa0-ab03-4e0a-8d92-637a857d2c91). CoinCap is a useful tool for real-time pricing and market activity for over 1,000 cryptocurrencies.
+  The data is from ...
 
 ### The ETL Jupyter Notebook
   The etl_pipeline notebook is located under the `project-root > your_jupyter_notebooks` folder. It contains 3 functions that perform the 3 parts of the ETL process.
 
 ### The ETL Process
-  Data is **extracted** from an external API (_extract()_ function), then it is **transformed** (_transform()_ function), and finally **loaded** (_load()_ function), i.e., persisted in a PostgreSQL database.
-  
-  During the transformation process, the semi-structured data (JSON) was normalized into a python DataFrame to assume a tabular (structured) format. Then, the data follows some cleaning procedures, such as converting categorical columns into numerical ones, handling missing data, and rounding some columns to 2 decimal places. 
-  
-  Data Quality checks were also performed during the process, guaranteeing that the data was correctly persisted in the PostgreSQL database.
-
-## Tableau - Bitcoin Price Evolution
-  Here you can see a simple Line Chart done in Tableau to follow Bitcoin price evolution.
-
-  <img src = "img/project01-bitcoin-tableau.png">
+  ...

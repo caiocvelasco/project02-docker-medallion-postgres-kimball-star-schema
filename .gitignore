@@ -4,5 +4,5 @@
 # Ignore .env files
 .env
 
-# Ignore datasets within the sources folder
-sources/*
+# Ignore datasets within the data folder
+data/*
