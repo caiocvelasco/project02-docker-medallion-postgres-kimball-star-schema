@@ -1,8 +1,9 @@
-CREATE VIEW gold.aggregated_data AS
-SELECT 
-    cleaned_field1,
-    cleaned_field2,
-    COUNT(*) AS record_count,
-    MAX(ingestion_timestamp) AS last_ingestion
-FROM silver.cleaned_data
-GROUP BY cleaned_field1, cleaned_field2;
+-- Create view to aggregate customer data for gold layer
+CREATE VIEW churn_gold.aggregated_summary AS
+SELECT
+    customer_status,
+    COUNT(*) AS customer_count,
+    AVG(age) AS avg_age,
+    AVG(total_transactions) AS avg_transactions
+FROM churn_silver.customer_summary
+GROUP BY customer_status;

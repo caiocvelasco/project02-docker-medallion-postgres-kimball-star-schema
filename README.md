@@ -21,9 +21,7 @@
 - **name_of_your_project_repo (project-root)/**
     - **.devcontainer/**
       - devcontainer.json
-    - **your_jup_notebooks/**
-      - etl_pipeline.ipynb
-    - **sql/**
+    - **sql_scripts/**
       - **schemas/**
         - create_schemas.sql
       - **bronze/**
@@ -34,9 +32,10 @@
         - create_gold_views.sql
     - **img/**
       - your_README_images.png
-    - **sources/**
-      - your_saved_CSV_from_ETL.csv
+    - **your_jup_notebooks/**
+      - etl_pipeline.ipynb
     - **.env**
+    - **.gitignore**
     - **.python-version**
     - **Dockerfile**
     - **docker-compose.yml**
