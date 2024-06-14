@@ -6,38 +6,25 @@ networks:
 # Create the services, i.e., the containers with their specific services inside (postgres, python, jupyter)
 services:  
   postgres:
+    restart: unless-stopped
+    build: # This 'build' tells docker-compose: don't just use the image, but build it from the Dockerfile
+      context: .
+      dockerfile: Dockerfile
     image: postgres:16 # The postgres service is using the "postgres:16" (check in cmd: docker ps)
     container_name: postgres
-    restart: unless-stopped
     env_file:
-    - ./.env
+      - ./.env
     ports:
       - "5432:5432" 
     expose:
       - "5432" # This makes the PostgreSQL service accessible via localhost:5432 on your local machine. However, within the container environment, services will use the postgres hostname as specified. For example, for PowerBI, Since Docker exposes port 5432 of the PostgreSQL container to port 5432 on your host machine, you connect to localhost:5432 when using PowerBI Desktop on your local machine. 
     volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock  # Bind Docker socket to enable Docker commands within the container
       - pgdata:/var/lib/postgresql/data # This volume specifies the postgres storage path
       # - ~/.ssh:/root/.ssh  # Mount SSH directory into the container
       # - ./init.sql:/docker-entrypoint-initdb.d/init.sql # From the local init.sql, automatically create schemas/tables in the database mounting as a volume inside the docker entrypoint folder
-    networks:
-      - etl_network
-
-  python:
-    restart: unless-stopped
-    build: # This 'build' tells docker-compose: don't just use the image, but build it from the Dockerfile
-      context: .
-      dockerfile: Dockerfile
-    image: python # The python service is using a custom image named "python" (check in cmd: docker ps)
-    container_name: python
-    env_file:
-    - ./.env
-    volumes:
-      - .:/workspace
-      # - ~/.ssh:/root/.ssh  # Mount SSH directory into the container
-      - /var/run/docker.sock:/var/run/docker.sock  # Bind Docker socket to enable Docker commands within the container
-    working_dir: /workspace 
-    depends_on:
-      - postgres # Name of the service/image that is build before, generating dependency
+    working_dir: /workspace
     stdin_open: true
     tty: true
     command: sleep infinity
@@ -48,9 +35,8 @@ services:
       image: jupyter/minimal-notebook
       container_name: jupyter_notebook
       restart: unless-stopped
-      environment:
-        - JUPYTER_TOKEN=123
-      #  - JUPYTER_ENABLE_LAB: "yes"
+      env_file:
+        - ./.env
       ports:
         - "8888:8888"
       volumes:
@@ -58,10 +44,31 @@ services:
       #  - ~/.ssh:/root/.ssh  # Mount SSH directory into the container
       working_dir: /workspace # Explicitly set the working directory for the Jupyter Notebook service to /workspace. Thus, os.getcwd() should return /workspace when executed within the Jupyter Notebook environment.
       depends_on:
-        - python
         - postgres
       networks:
         - etl_network
+
+# python:
+  #   restart: unless-stopped
+  #   build: # This 'build' tells docker-compose: don't just use the image, but build it from the Dockerfile
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: python # The python service is using a custom image named "python" (check in cmd: docker ps)
+  #   container_name: python
+  #   env_file:
+  #     - ./.env
+  #   volumes:
+  #     - .:/workspace
+  #     # - ~/.ssh:/root/.ssh  # Mount SSH directory into the container
+  #     - /var/run/docker.sock:/var/run/docker.sock  # Bind Docker socket to enable Docker commands within the container
+  #   working_dir: /workspace 
+  #   depends_on:
+  #     - postgres # Name of the service/image that is build before, generating dependency
+  #   stdin_open: true
+  #   tty: true
+  #   command: sleep infinity
+  #   networks:
+  #     - etl_network
 
   # pgadmin:
   #     image: dpage/pgadmin4
