@@ -13,6 +13,7 @@
 - [Project Definition](#Project-Definition)
   - [Medallion Architecture](#Medallion-Architecture)
   - [Creating Schemas-Tables-Views](#Creating-Schemas-Tables-Views)
+  - [Ingesting Data](#Ingesting-Data)
   - [The ETL Jupyter Notebook](#The-ETL-Jupyter-Notebook)
   - [The ETL Process](#The-ETL-Process)
   
@@ -103,11 +104,13 @@ Create a `.env` file in the project root with the following content:
     * churn_silver (the data model layer, where we transform the data following the Star Schema Data Model (Kimball), a type of Dimensional Modelling)
     * churn_gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
 
-### Creating Schemas-Tables-Views in the Postgres Database
+### Creating Schemas-Tables-Views
   * Step 1: Running __run_sql_scripts.sh__
     * You should run the __run_sql_scripts.sh__ file within the docker container's terminal. It will request the password for each time it tries to run a DDL (CREATE SCHEMA, CREATE TABLE, CREATE VIEW) from within the shell file.
-  * Step 2: Running __etl_pipeline_medallion__ jupyter notebook
-    * You should run the this notebook file in order to ingest data into the PostgreSQL database.
+
+### Ingesting Data
+  * Step 2: Running __data_ingestion__ jupyter notebook
+    * You should run the this notebook file in order to ingest data into the first layer of the Medallion Architecture.
 
 ### The ETL Jupyter Notebook
   The jupyter notebook that performs the ETL process is located under the `project-root > your_jupyter_notebooks` folder. 
