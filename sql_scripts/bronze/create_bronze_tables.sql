@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS churn_bronze.customer_data (
     gender VARCHAR(10),
     total_transactions INT,
     last_purchase_date DATE,
-    churn_status BOOLEAN
+    churn_status INT -- If you want to insert as boolean, do it here. We put as 'int' to make it easier for Machine Learning
 );
