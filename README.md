@@ -32,6 +32,9 @@
         - create_silver_views.sql
       - **gold/**
         - create_gold_views.sql
+    - **data/**
+      - **raw/**
+        - the_raw_CSV_files.csv
     - **img/**
       - your_README_images.png
     - **your_jup_notebooks/**
@@ -100,9 +103,9 @@ Create a `.env` file in the project root with the following content:
 ### Medallion Architecture
   * I created 3 schemas within the PostgreSQL database to mimic the Medallion Architecture (bronze, silver, and gold layers) usually found in Data Warehouse solutions. 
   * The schemas can be found within the __sql_scripts__ folder and are called:
-    * churn_bronze (the raw layer, where we store raw data, no transformations)
-    * churn_silver (the data model layer, where we transform the data following the Star Schema Data Model (Kimball), a type of Dimensional Modelling)
-    * churn_gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
+    * bronze (the raw layer, where we store raw data, no transformations)
+    * silver (the data model layer, where we transform the data following the Star Schema Data Model (Kimball), a type of Dimensional Modelling)
+    * gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
 
 ### Creating Schemas-Tables-Views
   * Step 1: Running __run_sql_scripts.sh__
