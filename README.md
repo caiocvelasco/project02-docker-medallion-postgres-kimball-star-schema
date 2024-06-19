@@ -14,7 +14,9 @@
   - [Medallion Architecture](#Medallion-Architecture)
   - [Source](#Source)
   - [Creating Schemas-Tables-Views](#Creating-Schemas-Tables-Views)
-  - [Ingesting Data](#Ingesting-Data)
+  - [Ingesting Data into the Bronze Layer](#Ingesting-Data-into-the-Bronze-Layer)
+  - [Ingesting Data into the Silver Layer](#Ingesting-Data-into-the-Silver-Layer)
+  - [Ingesting Data into the Gold Layer](#Ingesting-Data-into-the-Gold-Layer)
   - [The ETL Jupyter Notebook](#The-ETL-Jupyter-Notebook)
   - [The ETL Process](#The-ETL-Process)
   
@@ -111,13 +113,21 @@ Create a `.env` file in the project root with the following content:
 ### Source
 The source data is composed of CSV files, each one containing the name of a table to be created in the bronze schema. Moreover, data will be ingested into these tables using the to_sql method, so make sure that CSV file names and matching the tables to be created in the __sql_scripts/create_bronze_tables.sql__ file. This ensures consistency and it is easy to follow.
 
+Although the `data/` folder was ignored in the `.gitignore` file, the source data (CSV files) can be found in `data/raw`.
+
 ### Creating Schemas-Tables-Views
   * Step 1: Running __run_sql_scripts.sh__
     * You should run the __run_sql_scripts.sh__ file within the docker container's terminal. It will request the password for each time it tries to run a DDL (CREATE SCHEMA, CREATE TABLE, CREATE VIEW) from within the shell file.
 
-### Ingesting Data
+### Ingesting Data into the Bronze Layer
   * Step 2: Running __data_ingestion_into_{schema}__ jupyter notebook where `{schema}` is each of the created schemas.
     * You should run the this notebook file in order to ingest data into the first layer of the Medallion Architecture.
+
+### Ingesting Data into the Silver Layer
+  [WORK IN PROGRESS]
+
+### Ingesting Data into the Gold Layer
+  [WORK IN PROGRESS]
 
 ### The ETL Jupyter Notebook
   This is the jupyter notebook that performs the ETL process. It is located under the `project-root > your_jup_notebooks` folder. It contains 3 functions that perform the 3 parts of the ETL process. In this case, extracting from multiple CSV files and building Python Dictionaries (key = table names, value = extracted and cleaned DataFrames), then transforming it by ensuring each date column in each CSV file is treated in the format accepted by PostgreSQL, then loading it to a PostgreSQL database.
