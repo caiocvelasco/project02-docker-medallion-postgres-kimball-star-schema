@@ -12,6 +12,7 @@
 - [Services](#services)
 - [Project Definition](#Project-Definition)
   - [Medallion Architecture](#Medallion-Architecture)
+  - [Source](#Source)
   - [Creating Schemas-Tables-Views](#Creating-Schemas-Tables-Views)
   - [Ingesting Data](#Ingesting-Data)
   - [The ETL Jupyter Notebook](#The-ETL-Jupyter-Notebook)
@@ -107,16 +108,22 @@ Create a `.env` file in the project root with the following content:
     * silver (the data model layer, where we transform the data following the Star Schema Data Model (Kimball), a type of Dimensional Modelling)
     * gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
 
+### Source
+The source data is composed of CSV files, each one containing the name of a table to be created in the bronze schema. Moreover, data will be ingested into these tables using the to_sql method, so make sure that CSV file names and matching the tables to be created in the __sql_scripts/create_bronze_tables.sql__ file. This ensures consistency and it is easy to follow.
+
 ### Creating Schemas-Tables-Views
   * Step 1: Running __run_sql_scripts.sh__
     * You should run the __run_sql_scripts.sh__ file within the docker container's terminal. It will request the password for each time it tries to run a DDL (CREATE SCHEMA, CREATE TABLE, CREATE VIEW) from within the shell file.
 
 ### Ingesting Data
-  * Step 2: Running __data_ingestion__ jupyter notebook
+  * Step 2: Running __data_ingestion_into_{schema}__ jupyter notebook where `{schema}` is each of the created schemas.
     * You should run the this notebook file in order to ingest data into the first layer of the Medallion Architecture.
 
 ### The ETL Jupyter Notebook
-  The jupyter notebook that performs the ETL process is located under the `project-root > your_jupyter_notebooks` folder. 
+  This is the jupyter notebook that performs the ETL process. It is located under the `project-root > your_jup_notebooks` folder. It contains 3 functions that perform the 3 parts of the ETL process. In this case, extracting from multiple CSV files and building Python Dictionaries (key = table names, value = extracted and cleaned DataFrames), then transforming it by ensuring each date column in each CSV file is treated in the format accepted by PostgreSQL, then loading it to a PostgreSQL database.
 
-### The ETL Process
-  The __etl_pipeline_medallion__ jupyter notebook contains 3 functions that perform the 3 parts of the ETL process. In this case, extracting from a CSV file into a Python DataFrame, then transforming it, then loading it to a PostgreSQL database.
+  The reason to use a Jupyter Notebook is to facilitate the user to see all the process in the same place. I always build something with the intention of sharing it later. **Therefore, documentation and "making it easier for the next person" are crucial factors in everything I build.**
+
+  * Example: for ingesting data into the bronze layer, run the `data_ingestion_into_bronze.ipynb` file. 
+
+  [WORK IN PROGRESS]
