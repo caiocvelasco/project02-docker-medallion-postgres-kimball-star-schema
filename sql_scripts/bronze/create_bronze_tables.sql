@@ -1,50 +1,59 @@
--- Create tables with raw date from multiple CSV files in the bronze layer
--- raw data has not been transformed.
+-- Create tables with raw data from multiple CSV files in the bronze layer
+-- Raw data has not been transformed. 
 
 -- Customer Churn Prediction
+-- Bronze Layer
+
 CREATE TABLE IF NOT EXISTS bronze.customers (
-    CustomerID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Age INT,
-    Gender VARCHAR(10),
-    SignupDate DATE
+    "CustomerID" INT PRIMARY KEY,
+    "Name" VARCHAR(100),
+    "Age" INT,
+    "Gender" VARCHAR(10),
+    "SignupDate" DATE
 );
 
 CREATE TABLE IF NOT EXISTS bronze.subscriptions (
-    SubscriptionID INT PRIMARY KEY,
-    CustomerID INT,
-    StartDate DATE,
-    EndDate DATE,
-    Type VARCHAR(50),
-    Status VARCHAR(50)
+    "SubscriptionID" INT PRIMARY KEY,
+    "CustomerID" INT,
+    "StartDate" DATE,
+    "EndDate" DATE,
+    "Type" VARCHAR(50),
+    "Status" VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS bronze.product_usage (
-    UsageID INT PRIMARY KEY,
-    CustomerID INT,
-    DateID INT,
-    ProductID INT,
-    NumLogins INT,
-    Amount DECIMAL(10, 2)
+    "UsageID" INT PRIMARY KEY,
+    "CustomerID" INT,
+    "DateID" INT,
+    "ProductID" INT,
+    "NumLogins" INT,
+    "Amount" DECIMAL(10, 2)
 );
 
 CREATE TABLE IF NOT EXISTS bronze.support_interactions (
-    InteractionID INT PRIMARY KEY,
-    CustomerID INT,
-    DateID INT,
-    IssueType VARCHAR(100),
-    ResolutionTime INT
+    "InteractionID" INT PRIMARY KEY,
+    "CustomerID" INT,
+    "DateID" INT,
+    "IssueType" VARCHAR(100),
+    "ResolutionTime" INT
 );
 
 CREATE TABLE IF NOT EXISTS bronze.dates (
-    DateID INT PRIMARY KEY,
-    Date DATE,
-    Week INT,
-    Month INT,
-    Quarter INT,
-    Year INT
+    "DateID" INT PRIMARY KEY,
+    "Date" DATE,
+    "Week" INT,
+    "Month" INT,
+    "Quarter" INT,
+    "Year" INT
 );
 
+-- Products
+CREATE TABLE IF NOT EXISTS bronze.products (
+    "ProductID" INT PRIMARY KEY,
+    "ProductName" VARCHAR(100),
+    "Category" VARCHAR(50),
+    "Price" DECIMAL(10, 2)
+);
 
 -- Old
 -- CREATE TABLE IF NOT EXISTS bronze.customer_data (

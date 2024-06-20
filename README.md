@@ -14,9 +14,11 @@
   - [Medallion Architecture](#Medallion-Architecture)
   - [Source](#Source)
   - [Creating Schemas-Tables-Views](#Creating-Schemas-Tables-Views)
-  - [Ingesting Data into the Bronze Layer](#Ingesting-Data-into-the-Bronze-Layer)
-  - [Ingesting Data into the Silver Layer](#Ingesting-Data-into-the-Silver-Layer)
-  - [Ingesting Data into the Gold Layer](#Ingesting-Data-into-the-Gold-Layer)
+  - [Data Integrity](#Data-Integrity)
+  - [Ingestion (Landing Zone)](#Ingestion-Landing-Zone)
+  - [Bronze Layer](#Bronze-Layer)
+  - [Silver Layer](#Silver-Layer)
+  - [Gold Layer](#Gold-Layer)
   - [The ETL Jupyter Notebook](#The-ETL-Jupyter-Notebook)
   - [The ETL Process](#The-ETL-Process)
   
@@ -119,17 +121,72 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
   * Step 1: Running __run_sql_scripts.sh__
     * You should run the __run_sql_scripts.sh__ file within the docker container's terminal. It will request the password for each time it tries to run a DDL (CREATE SCHEMA, CREATE TABLE, CREATE VIEW) from within the shell file.
 
-### Ingesting Data into the Bronze Layer
+### Data Integrity
+
+  * For Data Integrity, the follwoing components were ensured in the data flow process:
+    * Data Accuracy: Ensuring that data is correct and free from errors.
+    * Data Consistency: Ensuring that data is consistent across different systems and datasets.
+    * Data Completeness: Ensuring that all required data is present.
+    * Data Standardization: Ensuring that data follows consistent formats and naming conventions.
+      * snake_case
+      * '_id' at the end if id
+    * Data Validation: Implementing checks to ensure data meets certain criteria before it is processed or stored.
+
+### Ingestion (Landing Zone)
   * Step 2: Running __data_ingestion_into_{schema}__ jupyter notebook where `{schema}` is each of the created schemas.
-    * You should run the this notebook file in order to ingest data into the first layer of the Medallion Architecture.
+    * You should run this notebook in order to ingest data into the first layer of the Medallion Architecture.
 
-  * What is build into the bronze layer?
+### Bronze Layer
+
+  * Tables or Views?
+    * In the Bronze layer, we created `Tables`.
+    * (Performance) Materialized tables can provide better performance for complex queries since the data is precomputed and stored. This especially useful when dealing with large volumes of data.
+
+  * Data Ingestion
+    * The bronze layer works as an initial **landing zone** for ingested data. The tables are:
+      * customers
+      * dates
+      * product_usage 
+      * products
+      * subscriptions
+      * support_interactions
     * Initial dimension tables are typically built in the bronze layer to capture raw attribute data from source systems. Thus, five tables were created in the bronze layer and data was ingested.
-    
-### Ingesting Data into the Silver Layer
-  [WORK IN PROGRESS]
 
-### Ingesting Data into the Gold Layer
+    * Data Integrity
+      * Data is loaded into the bronze layer with minimal transformation, preserving the original structure and content from the source CSV files.
+
+    * Normalization:
+      * Tables are still normalized, hence suitable for subsequent transformation into the silver and gold layers.
+    
+### Silver Layer
+  
+  * Tables or Views?
+    * In the Silver layer, we created `Views`.
+    * (Real-Time Data) Views can provide up-to-date data as they are essentially saved queries that are executed in real-time when accessed. Any changes in the underlying bronze tables are immediately reflected in the views, ensuring that the data is always up-to-date with the latest records in the bronze layer.
+
+  * Data Integration and Transformation
+    * Brings together data from multiple sources (e.g., multiple CSV files) to create unified views or tables. The views are:
+      * Dimensions
+        * dim_customers
+        * dim_dates
+        * dim_products
+      * Facts
+        * fact_subscriptions
+        * fact_product_usage
+        * fact_support_interactions
+    * The views in the silver layer integrate and transform data from the bronze layer, preparing it for the gold layer where further analytical views and metrics can be defined.
+
+    * Data Integrity
+      * Consistent and standardized naming conventions:
+        * snake_case
+        * '_id' at the end if id
+
+    * Normalization:
+      * Dimension tables are designed to hold descriptive attributes and are typically denormalized for performance in query operations.
+      * Fact tables are normalized to ensure they hold only measurable, quantitative data, linked via foreign keys to the dimension tables.
+      * This process helps maintain data consistency and integrity by structuring data into related tables and establishing clear relationships among them.
+
+### Gold Layer
   [WORK IN PROGRESS]
 
 ### The ETL Jupyter Notebook
