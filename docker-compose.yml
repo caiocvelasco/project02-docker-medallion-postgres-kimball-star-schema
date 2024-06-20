@@ -38,9 +38,10 @@ services:
     working_dir: /workspace 
     depends_on:
       - postgres # Name of the service/image that is build before, generating dependency
-    stdin_open: true
-    tty: true
-    command: sleep infinity
+    stdin_open: true # Allow an interactive terminal session
+    tty: true # Allow an interactive terminal session
+    # command: sleep infinity # used to keep the container running indefinitely
+    command: bash # automatically open a bash terminal when the container starts
     networks:
       - etl_network
 

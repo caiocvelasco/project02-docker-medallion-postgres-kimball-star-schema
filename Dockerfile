@@ -23,7 +23,7 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 # Set up the stable repository for Docker
 RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
-# Install Docker CLI
+# Install Docker CLI (This allows docker commands to be used from within the container's terminal)
 RUN apt-get update && \
     apt-get install -y docker-ce-cli && \
     apt-get clean && \
