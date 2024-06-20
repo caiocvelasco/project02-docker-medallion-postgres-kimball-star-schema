@@ -111,7 +111,7 @@ Create a `.env` file in the project root with the following content:
     * gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
 
 ### Source
-The source data is composed of CSV files, each one containing the name of a table to be created in the bronze schema. Moreover, data will be ingested into these tables using the to_sql method, so make sure that CSV file names and matching the tables to be created in the __sql_scripts/create_bronze_tables.sql__ file. This ensures consistency and it is easy to follow.
+The source data is composed of CSV files, each one containing the name of a table to be created in the bronze schema. Moreover, data will be ingested into these tables using the `to_sql` method, so make sure that CSV file names are matching the desired names for the tables to be created in the __sql_scripts/create_bronze_tables.sql__ file. This ensures consistency and readability.
 
 Although the `data/` folder was ignored in the `.gitignore` file, the source data (CSV files) can be found in `data/raw`.
 
@@ -123,6 +123,9 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
   * Step 2: Running __data_ingestion_into_{schema}__ jupyter notebook where `{schema}` is each of the created schemas.
     * You should run the this notebook file in order to ingest data into the first layer of the Medallion Architecture.
 
+  * What is build into the bronze layer?
+    * Initial dimension tables are typically built in the bronze layer to capture raw attribute data from source systems. Thus, five tables were created in the bronze layer and data was ingested.
+    
 ### Ingesting Data into the Silver Layer
   [WORK IN PROGRESS]
 
