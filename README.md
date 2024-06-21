@@ -1,6 +1,6 @@
 # ETL Pipeline with Medallion Architecture & Star Schema (with Dockerized Postgres, Jupyter Notebook, and Python). 
 
-<img src = "img/project02-XYZ.png">
+<img src = "img/project_02-elt-medallion.png">
 
 ## Table of Contents
 
