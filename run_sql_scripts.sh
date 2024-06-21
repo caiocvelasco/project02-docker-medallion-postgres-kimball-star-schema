@@ -20,8 +20,8 @@ run_sql_script "schemas/create_schemas.sql"
 # Run create_bronze_tables.sql
 run_sql_script "bronze/create_bronze_tables.sql"
 
-# # Run create_silver_views.sql
-# run_sql_script "silver/create_silver_views.sql"
+# Run create_silver_views.sql
+run_sql_script "silver/create_silver_views.sql"
 
-# # Run create_gold_views.sql
-# run_sql_script "gold/create_gold_views.sql"
+# Run create_gold_views.sql
+run_sql_script "gold/create_gold_views.sql"
