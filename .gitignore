@@ -6,3 +6,7 @@
 
 # Ignore what is inside the data folder
 data/*
+
+# Ignore my own deprecates things
+deprecated_things
+deprecated_things/*
