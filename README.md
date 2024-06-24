@@ -15,7 +15,6 @@
   - [Source](#Source)
   - [Creating Schemas-Tables-Views](#Creating-Schemas-Tables-Views)
   - [Data Integrity](#Data-Integrity)
-  - [Ingestion (Landing Zone)](#Ingestion-Landing-Zone)
   - [Bronze Layer](#Bronze-Layer)
   - [Silver Layer](#Silver-Layer)
   - [Gold Layer](#Gold-Layer)
@@ -113,13 +112,13 @@ Create a `.env` file in the project root with the following content:
     * gold (the analytics layer, where we build the final tables ready to be consumed by analysts)
 
 ### Source
-The source data is composed of CSV files, each one containing the name of a table to be created in the bronze schema. Moreover, data will be ingested into these tables using the `to_sql` method, so make sure that CSV file names are matching the desired names for the tables to be created in the __sql_scripts/create_bronze_tables.sql__ file. This ensures consistency and readability.
+The source data is composed of CSV files, each one containing the name of a table to be created in each layer/schema.
 
 Although the `data/` folder was ignored in the `.gitignore` file, the source data (CSV files) can be found in `data/raw`.
 
 ### Creating Schemas-Tables-Views
-  * Step 1: Running __run_sql_scripts.sh__
-    * You should run the __run_sql_scripts.sh__ file within the docker container's terminal. It will request the password for each time it tries to run a DDL (CREATE SCHEMA, CREATE TABLE, CREATE VIEW) from within the shell file.
+  * Running __/workspace/your_jup_notebooks/elt_pipeline_bronze_silver.ipynb__
+    * You should run the __elt_pipeline_bronze_silver__ jupyter notebook. This will create all tables into the Bronze layer (with a function that runs a `.sql` script), ingest the data, then create all tables into the Silver layer in the same way, ingested the data from bronze into silver, then do the same for the gold layer.
 
 ### Data Integrity
 
@@ -131,10 +130,6 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
       * snake_case
       * '_id' at the end if id
     * Data Validation: Implementing checks to ensure data meets certain criteria before it is processed or stored.
-
-### Ingestion (Landing Zone)
-  * Step 2: Running __data_ingestion_into_{schema}__ jupyter notebook where `{schema}` is each of the created schemas.
-    * You should run this notebook in order to ingest data into the first layer of the Medallion Architecture.
 
 ### Bronze Layer
 
@@ -161,11 +156,11 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
 ### Silver Layer
   
   * Tables or Views?
-    * In the Silver layer, we created `Views`.
+    * In the Silver layer, we should create `Views`, but we created `Tables` just for learning purposes.
     * (Real-Time Data) Views can provide up-to-date data as they are essentially saved queries that are executed in real-time when accessed. Any changes in the underlying bronze tables are immediately reflected in the views, ensuring that the data is always up-to-date with the latest records in the bronze layer.
 
   * Data Integration and Transformation
-    * Brings together data from multiple sources (e.g., multiple CSV files) to create unified views or tables. The views are:
+    * Brings together data from multiple sources (e.g., multiple CSV files) to create unified views or tables. The tables are:
       * Dimensions
         * dim_customers
         * dim_dates
@@ -174,7 +169,7 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
         * fact_subscriptions
         * fact_product_usage
         * fact_support_interactions
-    * The views in the silver layer integrate and transform data from the bronze layer, preparing it for the gold layer where further analytical views and metrics can be defined.
+    * The tables in the silver layer integrate and transform data from the bronze layer, preparing it for the gold layer where further analytical views/tables and metrics can be defined.
 
     * Data Integrity
       * Consistent and standardized naming conventions:
@@ -189,11 +184,9 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
 ### Gold Layer
   [WORK IN PROGRESS]
 
-### The ETL Jupyter Notebook
-  This is the jupyter notebook that performs the ETL process. It is located under the `project-root > your_jup_notebooks` folder. It contains 3 functions that perform the 3 parts of the ETL process. In this case, extracting from multiple CSV files and building Python Dictionaries (key = table names, value = extracted and cleaned DataFrames), then transforming it by ensuring each date column in each CSV file is treated in the format accepted by PostgreSQL, then loading it to a PostgreSQL database.
+### The Jupyter Notebook
+  This is the jupyter notebook that performs the whole ETL process within all layers in the Medallion Architecture. It is located under the `project-root > your_jup_notebooks` folder.
 
   The reason to use a Jupyter Notebook is to facilitate the user to see all the process in the same place. I always build something with the intention of sharing it later. **Therefore, documentation and "making it easier for the next person" are crucial factors in everything I build.**
-
-  * Example: for ingesting data into the bronze layer, run the `data_ingestion_into_bronze.ipynb` file. 
 
   [WORK IN PROGRESS]
