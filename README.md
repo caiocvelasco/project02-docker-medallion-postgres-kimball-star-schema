@@ -182,7 +182,9 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
       * This process helps maintain data consistency and integrity by structuring data into related tables and establishing clear relationships among them.
 
 ### Gold Layer
-  [WORK IN PROGRESS]
+
+  * Data Aggregation and Feature Engineering
+    * Data in the Gold layer is often used to build predictive models for tasks like churn prediction. It is pre-processed and structured to facilitate the development of machine learning models for predictive analytics
 
 ### The Jupyter Notebook
   This is the jupyter notebook that performs the whole ETL process within all layers in the Medallion Architecture. It is located under the `project-root > your_jup_notebooks` folder.

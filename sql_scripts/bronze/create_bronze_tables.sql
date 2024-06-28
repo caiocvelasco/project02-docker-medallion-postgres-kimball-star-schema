@@ -4,6 +4,8 @@
 -- Customer Churn Prediction
 -- Bronze Layer 
 
+-- CUSTOMERS
+-- Information about customers
 CREATE TABLE IF NOT EXISTS bronze.customers (
     "CustomerID" INT PRIMARY KEY,
     "Name" VARCHAR(100),
@@ -14,38 +16,8 @@ CREATE TABLE IF NOT EXISTS bronze.customers (
     "inserted_at" TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS bronze.subscriptions (
-    "SubscriptionID" INT PRIMARY KEY,
-    "CustomerID" INT,
-    "StartDate" DATE,
-    "EndDate" DATE,
-    "Type" VARCHAR(50),
-    "Status" VARCHAR(50),
-    "extracted_at" TIMESTAMP,
-    "inserted_at" TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS bronze.product_usage (
-    "UsageID" INT PRIMARY KEY,
-    "CustomerID" INT,
-    "DateID" INT,
-    "ProductID" INT,
-    "NumLogins" INT,
-    "Amount" DECIMAL(10, 2),
-    "extracted_at" TIMESTAMP,
-    "inserted_at" TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS bronze.support_interactions (
-    "InteractionID" INT PRIMARY KEY,
-    "CustomerID" INT,
-    "DateID" INT,
-    "IssueType" VARCHAR(100),
-    "ResolutionTime" INT,
-    "extracted_at" TIMESTAMP,
-    "inserted_at" TIMESTAMP
-);
-
+-- DATES
+-- Date-related information
 CREATE TABLE IF NOT EXISTS bronze.dates (
     "DateID" INT PRIMARY KEY,
     "Date" DATE,
@@ -57,7 +29,32 @@ CREATE TABLE IF NOT EXISTS bronze.dates (
     "inserted_at" TIMESTAMP
 );
 
--- Products
+-- PRODUCT USAGE
+-- Contains information about product usage by customers on specific dates.
+-- Provides insights into how customers interact with specific products or services offered by a business.
+-- NumLogins: Indicates the number of times the customer logged in or interacted with the product on the given date. 
+    -- This could be applicable for services where customers need to log in to access functionalities.
+-- Amount: Represents the amount associated with the product usage. 
+    -- This could be monetary (e.g., amount spent on a service) or non-monetary (e.g., units consumed)
+-- Example: 
+    -- Customer A (identified by CustomerID 101) uses Product A (identified by ProductID 401) on 2023-01-01 (DateID 20230101).
+    -- They logged in 5 times (NumLogins = 5) and the total amount spent was $150.00.
+
+CREATE TABLE IF NOT EXISTS bronze.product_usage (
+    "UsageID" INT PRIMARY KEY,-- DateID: A reference to the date on which the product usage occurred. 
+    -- This links to the dates.csv where detailed date information is stored.
+    "CustomerID" INT,
+    "DateID" INT,
+    "ProductID" INT,
+    "NumLogins" INT,
+    "Amount" DECIMAL(10, 2),
+    "extracted_at" TIMESTAMP,
+    "inserted_at" TIMESTAMP
+);
+
+-- PRODUCTS
+-- Information about products
+-- Each row represents a product with its name, category, and price
 CREATE TABLE IF NOT EXISTS bronze.products (
     "ProductID" INT PRIMARY KEY,
     "ProductName" VARCHAR(100),
@@ -67,85 +64,31 @@ CREATE TABLE IF NOT EXISTS bronze.products (
     "inserted_at" TIMESTAMP
 );
 
+-- SUBSCRIPTIONS
+-- Information about customer subscriptions
+-- Each row represents a subscription of a customer, including its type (e.g., annual, monthly) and status (e.g., active, churned)
+CREATE TABLE IF NOT EXISTS bronze.subscriptions (
+    "SubscriptionID" INT PRIMARY KEY,
+    "CustomerID" INT,
+    "StartDate" DATE,
+    "EndDate" DATE,
+    "Type" VARCHAR(50),
+    "Status" VARCHAR(50),
+    "extracted_at" TIMESTAMP,
+    "inserted_at" TIMESTAMP
+);
 
-
-
--- -- Customers table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.customers (
---     customer_id INT PRIMARY KEY,
---     name VARCHAR(100),
---     age INT,
---     gender VARCHAR(10),
---     signup_date DATE,
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
--- -- Subscriptions table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.subscriptions (
---     subscription_id INT PRIMARY KEY,
---     customer_id INT,
---     start_date DATE,
---     end_date DATE,
---     type VARCHAR(50),
---     status VARCHAR(50),
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
--- -- Product usage table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.product_usage (
---     usage_id INT PRIMARY KEY,
---     customer_id INT,
---     date_id INT,
---     product_id INT,
---     num_logins INT,
---     amount DECIMAL(10, 2),
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
--- -- Support interactions table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.support_interactions (
---     interaction_id INT PRIMARY KEY,
---     customer_id INT,
---     date_id INT,
---     issue_type VARCHAR(100),
---     resolution_time INT,
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
--- -- Dates table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.dates (
---     date_id INT PRIMARY KEY,
---     date DATE,
---     week INT,
---     month INT,
---     quarter INT,
---     year INT,
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
--- -- Products table in bronze layer
--- CREATE TABLE IF NOT EXISTS bronze.products (
---     product_id INT PRIMARY KEY,
---     product_name VARCHAR(100),
---     category VARCHAR(50),
---     price DECIMAL(10, 2),
---     extracted_at TIMESTAMP,
---     inserted_at TIMESTAMP
--- );
-
-
-
--- Old
--- CREATE TABLE IF NOT EXISTS bronze.customer_data (
---     customer_id INT PRIMARY KEY,
---     age INT,
---     gender VARCHAR(10),
---     total_transactions INT,
---     last_purchase_date DATE,
---     churn_status INT -- If you want to insert as boolean, do it here. We put as 'int' to make it easier for Machine Learning
--- );
+-- SUPPORT INTERACTIONS
+-- Information about customer support interactions, detailing the issue type and the time taken for resolution for each support interaction (InteractionID)
+-- InteractionID: Each row represents a support interaction
+-- DateID: A reference to the date on which the product usage occurred. 
+    -- This links to the dates.csv where detailed date information is stored.
+CREATE TABLE IF NOT EXISTS bronze.support_interactions (
+    "InteractionID" INT PRIMARY KEY,
+    "CustomerID" INT,
+    "DateID" INT,
+    "IssueType" VARCHAR(100),
+    "ResolutionTime" INT,
+    "extracted_at" TIMESTAMP,
+    "inserted_at" TIMESTAMP
+);
