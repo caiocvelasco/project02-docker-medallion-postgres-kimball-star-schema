@@ -18,8 +18,7 @@
   - [Bronze Layer](#Bronze-Layer)
   - [Silver Layer](#Silver-Layer)
   - [Gold Layer](#Gold-Layer)
-  - [The ETL Jupyter Notebook](#The-ETL-Jupyter-Notebook)
-  - [The ETL Process](#The-ETL-Process)
+  - [The Jupyter Notebook](#The-Jupyter-Notebook)
   
 
 ## Project Structure
@@ -190,5 +189,3 @@ Although the `data/` folder was ignored in the `.gitignore` file, the source dat
   This is the jupyter notebook that performs the whole ETL process within all layers in the Medallion Architecture. It is located under the `project-root > your_jup_notebooks` folder.
 
   The reason to use a Jupyter Notebook is to facilitate the user to see all the process in the same place. I always build something with the intention of sharing it later. **Therefore, documentation and "making it easier for the next person" are crucial factors in everything I build.**
-
-  [WORK IN PROGRESS]
